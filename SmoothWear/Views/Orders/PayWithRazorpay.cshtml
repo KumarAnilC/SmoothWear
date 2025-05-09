@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "Pay with Razorpay";
+    var orderId = ViewBag.OrderId;
+    var totalAmount = ViewBag.TotalAmount;
+}
+
+<h2 class="text-center text-success">Pay ₹@totalAmount for Order #@orderId</h2>
+
+<button id="rzp-button" class="btn btn-primary center-block">Pay Now</button>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    var options = {
+        "key": "rzp_test_mockkey123", // mock key
+        "amount": @((int)(totalAmount * 100)), // paise
+        "currency": "INR",
+        "name": "SmoothWear",
+        "description": "Test Order Payment",
+        "handler": function (response) {
+            alert("Payment Successful. Payment ID: " + response.razorpay_payment_id);
+            window.location.href = '/Orders/PaymentSuccess?orderId=' + @orderId;
+        },
+        "prefill": {
+            "name": "Test User",
+            "email": "test@example.com",
+            "contact": "9999999999"
+        },
+        "theme": {
+            "color": "#528FF0"
+        }
+    };
+
+    var rzp = new Razorpay(options);
+    document.getElementById('rzp-button').onclick = function () {
+        rzp.open();
+    };
+</script>

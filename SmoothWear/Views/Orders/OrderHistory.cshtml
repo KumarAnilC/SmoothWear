@@ -1,0 +1,63 @@
+﻿@model IEnumerable<SmoothWear.Models.Tbl_Orders>
+
+@{
+    ViewBag.Title = "Order History";
+}
+
+<style>
+    td,th,h2 {
+        color: aliceblue;
+    }
+</style>
+
+<h2>Your Order History</h2>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Order Date</th>
+                <th>Status</th>
+                @*<th>Total Price</th>*@
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model)
+            {
+                <tr>
+                    <td>@order.OrderId</td>
+                    <td>@order.OrderDate</td>
+                    <td>
+                        @if (order.Status == "Placed")
+                        {
+                            <span class="badge badge-warning">Placed</span>
+                        }
+                        else if (order.Status == "Accepted")
+                        {
+                            <span class="badge badge-success">Accepted</span>
+                        }
+                        else if (order.Status == "Rejected")
+                        {
+                            <span class="badge badge-danger">Rejected</span>
+                        }
+                        else
+                        {
+                            <span class="badge badge-secondary">Unknown</span>
+                        }
+                    </td>
+                    @*<td>@ViewBag.TotalPrice.ToString("C")</td>*@
+                    <td>
+                        <a href="@Url.Action("OrderDetails", "Orders", new { orderId = order.OrderId })" class="btn btn-primary btn-sm">View Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No orders found.</p>
+}

@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title SmoothWear</title>
+    <link rel="icon" href="~/Content/Images/img9.jpg" type="image/jpg" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    @* After jQuery, include other required script files, like jQuery validation *@
+    @Scripts.Render("~/bundles/jqueryval") 
+    
+      
+</head>
+
+
+
+<body style="background-color:black">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="@Url.Action("Index", "Home")">
+                    <img src="~/Content/Images/img9.jpg" alt="SmoothWear" style="height:30px; display:inline; margin-right:5px;border-radius:10px;" />
+                    <span style="font-size:25px;font-family:'Arial Rounded MT';color:aqua">SmoothWear</span>
+                </a>
+                @*@Html.ActionLink("Smooth Wear", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    @*<li>@Html.ActionLink("Home", "Index", "Home")</li>*@
+                    <li><a href="@Url.Action("Index", "Home")#about">About</a></li>
+                    @*<li>@Html.ActionLink("About", "About", "Home")</li>*@
+                    <li><a href="@Url.Action("Index", "Home")#contact">Contact</a></li>
+                    @*<li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            Services <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a href="@Url.Action("Ironing", "Services")">Ironing</a></li>
+                            <li><a href="@Url.Action("Washing", "Services")">Washing</a></li>
+                            <li><a href="@Url.Action("WashAndIron", "Services")">Wash and Iron</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="@Url.Action("AllServices", "Services")">View All Services</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p style="color:chartreuse">&copy; @DateTime.Now.Year - SmoothWear!!</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,106 @@
+﻿@model List<SmoothWear.Models.Tbl_ProductDetails>
+
+@{
+    ViewBag.Title = ViewBag.Title ?? "Our Services";
+}
+
+<style>
+    h4,p{
+        color: aliceblue;
+    }
+</style>
+
+<h2 class="text-center text-primary">@ViewBag.Title</h2>
+<hr />
+
+@if (Model != null && Model.Any())
+{
+    <div class="container">
+        <div class="row">
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                var product = Model[i];
+
+                <div class="col-md-4 mb-4">
+                    <div class="card" style="padding: 15px; border: 1px solid #ccc; border-radius: 10px;text-align:center">
+                        @*<img src="@Url.Content(product.ProductImage)" alt="Image" class="img-responsive center-block" style="height: 180px; object-fit: contain;" />*@
+                        <div style="text-align: center;">
+                            <img src="@Url.Content(product.ProductImage)" alt="Image"
+                                 class="img-responsive"
+                                 style="height: 180px; max-width: 100%; display: inline-block; object-fit: contain;" />
+                        </div>
+
+                        <h4 class="text-center mt-3">@product.ProductName</h4>
+                        <p class="text-center"><strong>₹@product.Cost</strong></p>
+                        <p>@product.Description</p>
+
+                        <div class="text-center">
+                            <button type="button" class="btn btn-default btn-sm" onclick="decreaseQuantity(@product.ProductId)">-</button>
+                            <input type="text" id="qty-@product.ProductId" value="1" class="text-center" style="width: 40px;" readonly />
+                            <button type="button" class="btn btn-default btn-sm" onclick="increaseQuantity(@product.ProductId)">+</button>
+                        </div>
+                        <br />
+                        <div class="text-center mt-2">
+                            <button type="button" class="btn btn-success mt-2" onclick="addToCart(@product.ProductId)">
+                                <span class="glyphicon glyphicon-shopping-cart"></span> Add to Cart
+                            </button>
+                        </div>
+                        
+                    </div>
+                    <br />
+                </div>
+               
+
+                if ((i + 1) % 3 == 0)
+                {
+                    @:<div class="clearfix"></div>
+                }
+            }
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-info text-center">
+        No products available in this category.
+    </div>
+}
+
+@section Scripts {
+    <script>
+        function increaseQuantity(id) {
+            var input = document.getElementById("qty-" + id);
+            input.value = parseInt(input.value) + 1;
+        }
+
+        function decreaseQuantity(id) {
+            var input = document.getElementById("qty-" + id);
+            if (parseInt(input.value) > 1) {
+                input.value = parseInt(input.value) - 1;
+            }
+        }
+
+      function addToCart(productId) {
+        var quantity = parseInt(document.getElementById("qty-" + productId).value);
+
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("AddToCartAjax", "Cart")',
+            data: { productId: productId, quantity: quantity },
+            success: function (response) {
+                if (response.success) {
+                    alert("Item added to cart!");
+                    $(".badge").text(response.cartCount);
+                } else {
+                    alert("Please log in to add items to your cart.");
+                    window.location.href = response.redirectUrl;
+                }
+            },
+            error: function () {
+                alert("Error adding item to cart.");
+            }
+        });
+    }
+</script>
+
+}

@@ -1,0 +1,60 @@
+﻿@model List<SmoothWear.Models.Tbl_Orders>
+
+@{
+    ViewBag.Title = "Manage Orders";
+}
+
+<style>
+    th,td{
+        color: aliceblue;
+    }
+</style>
+
+<h2 class="text-center text-primary">Manage Incoming Orders</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>User Email</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Pickup Slot</th>
+            <th>Payment Mode</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.OrderId</td>
+                <td>@order.UserEmail</td>
+                <td>@order.PhoneNo</td>
+                <td>@order.Address</td>
+                <td>@order.PreferredPickupSlot</td>
+                <td>@order.PaymentMode</td>
+                <td>@order.Status</td>
+                <td>
+                    <a href="@Url.Action("AcceptOrder", "Orders", new { id = order.OrderId })"
+                       class="btn btn-success btn-sm"
+                       onclick="return confirm('Are you sure you want to ACCEPT this order?');">
+                        Accept
+                    </a>
+
+                    <a href="@Url.Action("RejectOrder", "Orders", new { id = order.OrderId })"
+                       class="btn btn-danger btn-sm"
+                       onclick="return confirm('Are you sure you want to REJECT this order?');">
+                        Reject
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="text-right" style="margin-bottom: 20px;">
+    <a href="@Url.Action("AdminViewAllOrders", "Orders")" class="btn btn-info">View All Orders</a>
+</div>
+

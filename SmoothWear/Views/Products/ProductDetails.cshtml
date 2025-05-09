@@ -1,0 +1,59 @@
+﻿@model SmoothWear.Models.Tbl_ProductDetails
+
+@{
+    ViewBag.Title = "Product Details";
+}
+
+<h2 class="text-center text-primary">Product Details</h2>
+
+<table class="table table-bordered table-striped">
+    <tr>
+        <th>Product ID</th>
+        <td>@Model.ProductId</td>
+    </tr>
+    <tr>
+        <th>Product Image</th>
+        <td>
+            @if (!string.IsNullOrEmpty(Model.ProductImage))
+            {
+                <img src="@Url.Content(Model.ProductImage)" alt="Product Image" style="max-height: 150px;" />
+            }
+            else
+            {
+                <span>No image available</span>
+            }
+        </td>
+    </tr>
+    <tr>
+        <th>Product Name</th>
+        <td>@Model.ProdcutName</td>
+    </tr>
+    <tr>
+        <th>Product Category</th>
+        <td>@Model.ProdcutCategory</td>
+    </tr>
+    <tr>
+        <th>Cost</th>
+        <td>₹@Model.Cost</td>
+    </tr>
+    <tr>
+        <th>Description</th>
+        <td>@Model.Description</td>
+    </tr>
+    <tr>
+        <th>Created At</th>
+        <td>@Model.CreatedAt?.ToString("dd MMM yyyy hh:mm tt")</td>
+    </tr>
+    <tr>
+        <th>Created By</th>
+        <td>@Model.CreatedBy</td>
+    </tr>
+    <tr>
+        <th>Is Active</th>
+        <td>@(Model.IsActive == true ? "Yes" : "No")</td>
+    </tr>
+</table>
+
+<div class="text-center">
+    @Html.ActionLink("Back to List", "ProductList", null, new { @class = "btn btn-secondary" })
+</div>

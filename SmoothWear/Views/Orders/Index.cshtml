@@ -1,0 +1,151 @@
+﻿@model SmoothWear.Models.Tbl_Orders
+
+@{
+    ViewBag.Title = "Place Order";
+}
+
+<style>
+    .form-group {
+        color: aliceblue;
+    }
+</style>
+
+<h2 class="text-center text-primary">Place Your Order</h2>
+
+<div class="row">
+    <div class="col-md-6 col-md-offset-3">
+        @using (Html.BeginForm("PlaceOrder", "Orders", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <!-- Phone Number -->
+                <div class="form-group">
+                    @Html.LabelFor(m => m.PhoneNo, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(m => m.PhoneNo, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.PhoneNo, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Address -->
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Address, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.TextAreaFor(m => m.Address, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- City -->
+                <div class="form-group">
+                    @Html.LabelFor(m => m.City, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(m => m.City, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.City, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Zip -->
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Zip, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(m => m.Zip, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Zip, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Preferred Pickup Time -->
+                <div class="form-group">
+                    <label class="control-label col-md-4">Preferred Pickup Time</label>
+                    <div class="col-md-8">
+                        @Html.DropDownListFor(m => m.PreferredPickupSlot, new SelectList(new[] {
+                            "Morning (8–10 AM)",
+                            "Midday (12–2 PM)",
+                            "Evening (4–6 PM)"
+                        }), "Select Slot", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.PreferredPickupSlot, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Payment Mode -->
+                <div class="form-group">
+                    <label class="control-label col-md-4">Payment Mode</label>
+                    <div class="col-md-8">
+                        <div class="radio">
+                            @Html.RadioButtonFor(m => m.PaymentMode, "COD") COD
+                        </div>
+                        <div class="radio">
+                            @Html.RadioButtonFor(m => m.PaymentMode, "Online") Online Payment
+                        </div>
+                        @Html.ValidationMessageFor(m => m.PaymentMode, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                @*<div class="form-group">
+                    <div class="col-md-offset-4 col-md-4">
+                        <button type="submit" class="btn btn-success btn-block">Place Order</button>
+                    </div>
+                </div>*@
+
+                <!-- Submit Button -->
+                <div class="form-group">
+                    <div class="col-md-offset-4 col-md-4">
+                        <button type="submit" id="placeOrderBtn" class="btn btn-success btn-block">Place Order</button>
+                    </div>
+                </div>
+
+
+            </div>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script>
+    $(function () {
+        $('form').submit(function (e) {
+            const paymentMode = $('input[name="PaymentMode"]:checked').val();
+
+            if (paymentMode === 'Online') {
+                e.preventDefault(); // Stop real form submit
+
+                // Simulate order saved and get orderId (use AJAX in real app)
+                const mockOrderId = Math.floor(Math.random() * 100000);
+
+                // Show fake Razorpay popup
+                showMockRazorpayPopup(mockOrderId);
+            }
+        });
+
+        function showMockRazorpayPopup(orderId) {
+            const popupHtml = `
+                <div id="mock-razorpay-popup" style="
+                    position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+                    background: rgba(0,0,0,0.7); display: flex;
+                    align-items: center; justify-content: center; z-index: 9999;">
+                    <div style="background: white; padding: 30px; border-radius: 10px; text-align: center; width: 300px;">
+                        <h3>Mock Razorpay</h3>
+                        <p>Simulating payment for Order #${orderId}</p>
+                        <button id="mockPayBtn" class="btn btn-success">Pay ₹100</button>
+                        <br/><br/>
+                        <button onclick="$('#mock-razorpay-popup').remove()" class="btn btn-secondary">Cancel</button>
+                    </div>
+                </div>
+            `;
+            $('body').append(popupHtml);
+
+            $('#mockPayBtn').click(function () {
+                // Simulate redirect to success page
+                window.location.href = '/Orders/Success?orderId=' + orderId;
+            });
+        }
+    });
+</script>
+

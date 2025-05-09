@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SmoothWear_DBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Tbl_UserDetails">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PhoneNo" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="DOB" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Address" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityContainer Name="SmoothWear_DBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Tbl_UserDetails" EntityType="Self.Tbl_UserDetails" />
+    <EntitySet Name="Tbl_ProductDetails" EntityType="SmoothWear_DBModel.Tbl_ProductDetails" />
+    <EntitySet Name="Tbl_Cart" EntityType="SmoothWear_DBModel.Tbl_Cart" />
+    <AssociationSet Name="FK_Tbl_Cart_Product" Association="SmoothWear_DBModel.FK_Tbl_Cart_Product">
+      <End Role="Tbl_ProductDetails" EntitySet="Tbl_ProductDetails" />
+      <End Role="Tbl_Cart" EntitySet="Tbl_Cart" />
+    </AssociationSet>
+    <EntitySet Name="Tbl_Orders" EntityType="SmoothWear_DBModel.Tbl_Orders" />
+    <EntitySet Name="Tbl_OrderedItems" EntityType="SmoothWear_DBModel.Tbl_OrderedItems" />
+    <AssociationSet Name="FK_OrderedItems_Orders" Association="SmoothWear_DBModel.FK_OrderedItems_Orders">
+      <End Role="Tbl_Orders" EntitySet="Tbl_Orders" />
+      <End Role="Tbl_OrderedItems" EntitySet="Tbl_OrderedItems" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Tbl_ProductDetails">
+    <Key>
+      <PropertyRef Name="ProductId" />
+    </Key>
+    <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductImage" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="ProductName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ProductCategory" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Cost" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="Description" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+    <Property Name="CreatedBy" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="IsActive" Type="Boolean" />
+    <NavigationProperty Name="Tbl_Cart" Relationship="SmoothWear_DBModel.FK_Tbl_Cart_Product" FromRole="Tbl_ProductDetails" ToRole="Tbl_Cart" />
+  </EntityType>
+  <EntityType Name="Tbl_Cart">
+    <Key>
+      <PropertyRef Name="CartId" />
+    </Key>
+    <Property Name="CartId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="UserName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="true" />
+    <Property Name="Quantity" Type="Int32" Nullable="false" />
+    <Property Name="DateAdded" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="Tbl_ProductDetails" Relationship="SmoothWear_DBModel.FK_Tbl_Cart_Product" FromRole="Tbl_Cart" ToRole="Tbl_ProductDetails" />
+  </EntityType>
+  <Association Name="FK_Tbl_Cart_Product">
+    <End Type="SmoothWear_DBModel.Tbl_ProductDetails" Role="Tbl_ProductDetails" Multiplicity="1" />
+    <End Type="SmoothWear_DBModel.Tbl_Cart" Role="Tbl_Cart" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tbl_ProductDetails">
+        <PropertyRef Name="ProductId" />
+      </Principal>
+      <Dependent Role="Tbl_Cart">
+        <PropertyRef Name="ProductId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Tbl_Orders">
+    <Key>
+      <PropertyRef Name="OrderId" />
+    </Key>
+    <Property Name="OrderId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="Int32" />
+    <Property Name="UserEmail" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNo" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Zip" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Name="PreferredPickupSlot" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="PaymentMode" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="PaymentStatus" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="OrderDate" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Tbl_OrderedItems" Relationship="SmoothWear_DBModel.FK_OrderedItems_Orders" FromRole="Tbl_Orders" ToRole="Tbl_OrderedItems" />
+  </EntityType>
+  <EntityType Name="Tbl_OrderedItems">
+    <Key>
+      <PropertyRef Name="OrderItemId" />
+    </Key>
+    <Property Name="OrderItemId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="OrderId" Type="Int32" Nullable="false" />
+    <Property Name="ProductId" Type="Int32" Nullable="false" />
+    <Property Name="ProductName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="ProductImage" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <Property Name="PricePerItem" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="Quantity" Type="Int32" Nullable="false" />
+    <Property Name="TotalPrice" Type="Decimal" Nullable="false" Precision="10" Scale="2" />
+    <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedAt" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="Tbl_Orders" Relationship="SmoothWear_DBModel.FK_OrderedItems_Orders" FromRole="Tbl_OrderedItems" ToRole="Tbl_Orders" />
+  </EntityType>
+  <Association Name="FK_OrderedItems_Orders">
+    <End Type="SmoothWear_DBModel.Tbl_Orders" Role="Tbl_Orders" Multiplicity="1" />
+    <End Type="SmoothWear_DBModel.Tbl_OrderedItems" Role="Tbl_OrderedItems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tbl_Orders">
+        <PropertyRef Name="OrderId" />
+      </Principal>
+      <Dependent Role="Tbl_OrderedItems">
+        <PropertyRef Name="OrderId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

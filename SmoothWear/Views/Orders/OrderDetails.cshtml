@@ -1,0 +1,62 @@
+﻿@model SmoothWear.Models.Tbl_Orders
+
+@{
+    ViewBag.Title = "Order Details";
+}
+
+<style>
+    td, th,h4,h3,p,h2 {
+        color: aliceblue;
+    }
+</style>
+
+<h2>Order Details</h2>
+
+<div>
+    <h3>Order ID: @Model.OrderId</h3>
+    <p>Order Date: @Model.OrderDate</p>
+    <p>
+        Status:
+        @if (Model.Status == "Placed")
+        {
+            <span class="badge badge-warning">Placed</span>
+        }
+        else if (Model.Status == "Accepted")
+        {
+            <span class="badge badge-success">Accepted</span>
+        }
+        else if (Model.Status == "Rejected")
+        {
+            <span class="badge badge-danger">Rejected</span>
+        }
+        else
+        {
+            <span class="badge badge-secondary">Unknown</span>
+        }
+    </p>
+
+    <h4>Ordered Items</h4>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Tbl_OrderedItems)
+            {
+                <tr>
+                    <td>@item.ProductName</td>
+                    <td>@item.PricePerItem.ToString("C")</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.TotalPrice.ToString("C")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<a href="@Url.Action("OrderHistory", "Orders")" class="btn btn-secondary">Back to Order History</a>

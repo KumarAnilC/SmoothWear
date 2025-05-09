@@ -1,0 +1,54 @@
+﻿@model List<SmoothWear.Models.Tbl_Orders>
+
+@{
+    ViewBag.Title = "All Orders";
+}
+
+<style>
+    th, td {
+        color: aliceblue;
+    }
+</style>
+
+<h2 class="text-center text-primary">All Orders</h2>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>User Email</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Pickup Slot</th>
+            <th>Payment Mode</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.OrderId</td>
+                <td>@order.UserEmail</td>
+                <td>@order.PhoneNo</td>
+                <td>@order.Address</td>
+                <td>@order.PreferredPickupSlot</td>
+                <td>@order.PaymentMode</td>
+                <td>
+                    @if (order.Status == "Accepted")
+                    {
+                        <span class="badge badge-success">Accepted</span>
+                    }
+                    else if (order.Status == "Rejected")
+                    {
+                        <span class="badge badge-danger">Rejected</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-warning">Placed</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

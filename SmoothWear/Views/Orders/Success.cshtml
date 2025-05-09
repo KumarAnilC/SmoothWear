@@ -1,0 +1,57 @@
+﻿@*@{
+    ViewBag.Title = "Order Success";
+}
+
+<style>
+    p{
+        color: aliceblue;
+    }
+</style>
+
+<h2 class="text-success">Thank you! Your order has been placed successfully.</h2>
+<p>We will contact you shortly to confirm your pickup schedule.</p>
+<a href="@Url.Action("Index", "Home")" class="btn btn-primary">Back to Home</a>*@
+
+@model SmoothWear.Models.Tbl_Orders
+
+@{
+    ViewBag.Title = "Order Status";
+}
+
+<style>
+    p {
+        color: aliceblue;
+    }
+</style>
+
+<h2 class="text-success">Thank you! Your order has been placed successfully.</h2>
+
+<hr />
+
+<h4>Order Details:</h4>
+<ul style="list-style: none; padding-left: 0;">
+    <li><strong>Order ID:</strong> @Model.OrderId</li>
+    <li><strong>Pickup Slot:</strong> @Model.PreferredPickupSlot</li>
+    <li><strong>Payment Mode:</strong> @Model.PaymentMode</li>
+    <li>
+        <strong>Current Status:</strong>
+        @if (Model.Status == "Accepted")
+        {
+            <span class="badge badge-success">Accepted</span>
+            <p>Your order has been accepted. Please get ready for pickup.</p>
+        }
+        else if (Model.Status == "Rejected")
+        {
+            <span class="badge badge-danger">Rejected</span>
+            <p>Sorry, your order was rejected. Please try placing a new order.</p>
+        }
+        else
+        {
+            <span class="badge badge-warning">Placed</span>
+            <p>Your order is placed and waiting for admin approval.</p>
+        }
+    </li>
+</ul>
+
+<a href="@Url.Action("Index", "Home")" class="btn btn-primary">Back to Home</a>
+
